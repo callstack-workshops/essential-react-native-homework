@@ -1,4 +1,4 @@
-# Module 4 Homework
+# Essential React Native Homework
 
 As your CTO and Tech Leader want to continue to expand their digital presence, it becomes imperative to reach a wider audience through multiple platforms. Adding a mobile app to complement your existing web app is a strategic step towards improving user experience and increasing engagement.
 Now that you know React, let's embark on an exciting journey into the world of React Native.
@@ -7,10 +7,7 @@ React Native enables developers to write code in JavaScript or TypeScript and de
 
 ### Homework management :house:
 
-The final result of all homework is the React Native Application full of features implemented iteratively in the end phase of each module in the course. In order to keep consistency and track all of your changes we highly recommend you to create your own GitHub repository where your work as a participant will be stored. Your GitHub repository should be shared with all trainers, which will enable us to verify your work and communicate:
-- Wiktor Szlegier: https://github.com/Wiiktor22
-- Adam Trzciński: https://github.com/adamTrz
-- Mariusz Pasiński: https://github.com/mani3xis 
+The final result of all homework is the React Native Application full of features implemented iteratively in the end phase of each module in the course. In order to keep consistency and track all of your changes we highly recommend you to create your own GitHub repository where your work as a participant will be stored. Your GitHub repository should be shared with all trainers, which will enable us to verify your work and communicate.
 
 Each module in the course will end up with homework consisting of a few tasks to fulfil. We would like to suggest a comfortable system for you to submit each task of the homework as a separate PR to the main branch in your repository. This will create a space for us to communicate with you, by doing code reviews - thanks to that we will be able to check your homework, discuss some uncertainties, or respond to questions you will leave in the PR. In case you have any trouble with homework you can always book a 1 to 1 session with the trainer, and also don't hesitate to ask your questions in the dedicated communication channel. Keep in mind that you don't have to worry about being blocked for the next homework, every homework will have a starting point, so you always will be able to override the content of your repository with the prepared starting point.
 
@@ -20,10 +17,7 @@ The goal of this homework is to build the mobile part of the Lotteries app. We w
 
 ### Starting point
 
-You should be able to continue working on the same homework project but if you don’t have it available or you want to start fresh here is a starting point for this homework - 
-
-https://github.com/callstack-workshops/abbott-module-4-homework
-
+You should be able to continue working on the same homework project but if you don’t have it available or you want to start fresh you can just use this repository as a starting point.
 
 ### Checkpoints :bulb:
 
@@ -85,12 +79,12 @@ Since we previously decided that our project will not be monorepo, let's just cr
 <details>
   <summary><b>Step 3: Configure `eslint` and `prettier`</b></summary><br>
 
-  1.Install necessary dependencies
+1.Install necessary dependencies
   ```bash
     npm install --save-dev eslint @callstack/eslint-config
   ```
 
-  2.Create configuration files for ESLint and Prettier:
+2.Create configuration files for ESLint and Prettier:
   ```js
   // .eslintrc
   {
@@ -106,7 +100,7 @@ Since we previously decided that our project will not be monorepo, let's just cr
   ```
 
 
-  3.Add the following script to the package.json
+3.Add the following script to the package.json
   ```json
     {
       "scripts": {
@@ -121,14 +115,14 @@ You can read more about TS configuration with expo here: https://docs.expo.dev/g
 
 </details>
 
-> :bulb: You are now here → https://github.com/callstack-workshops/abbott-module-4-homework/tree/part-1 
+> :bulb: You are now here → [part-1](../../tree/part-1)
 
 ## Part 2: Add a lottery
 
 <details>
   <summary>In this part we will implement the given UI:</summary> 
 
-  <img width="511" alt="ui" src="https://github.com/callstack-workshops/abbott-module-4-homework/assets/13610886/a2938d77-5b6e-4d9b-976e-7c38b7c785fc" />
+  <img width="511" alt="ui" src="./assets/image1.png" />
 
 
 </details>
@@ -141,10 +135,10 @@ You can read more about TS configuration with expo here: https://docs.expo.dev/g
 6. Add form validation:
   <details>
     <summary>Form validation</summary>
-    
-  <img width="511" alt="ui" src="https://github.com/callstack-workshops/abbott-module-4-homework/assets/13610886/d7e0e79a-bec5-4e0d-99d9-7dee01b36134" />
 
-    
+  <img width="511" alt="ui" src="./assets/image2.png" />
+
+
   </details>
 
 
@@ -156,18 +150,18 @@ Add lottery feature should have following things implemented:
 - Loading state should be present when form is submitted
 - After successful submission we should be navigated back to Home Screen and Toast with a `'New lottery added successfully!'` message should be displayed
 
-  
 
-> :bulb: You are now here → https://github.com/callstack-workshops/abbott-module-4-homework/tree/part-2
+
+> :bulb: You are now here → [part-2](../../tree/part-2)
 
 ## Part 3: List lotteries
 
-Given the UI design implement List lotteries feature. 
+Given the UI design implement List lotteries feature.
 
 <details>
   <summary><b>Fetch and display lottery data</b></summary><br>
 
-<img width="511" alt="Screenshot 2023-07-17 at 14 46 14" src="https://github.com/callstack-workshops/abbott-module-4-homework/assets/13610886/d446bd57-3ed7-4473-98d1-c25302b657ac">
+<img width="511" alt="Screenshot 2023-07-17 at 14 46 14" src="./assets/image3.png">
 
 
 </details>
@@ -175,7 +169,7 @@ Given the UI design implement List lotteries feature.
 <details>
   <summary><b>Add text input to filter fetched lotteries</b></summary><br>
 
-<img width="511" alt="Screenshot 2023-07-17 at 14 47 16" src="https://github.com/callstack-workshops/abbott-module-4-homework/assets/13610886/a225af13-cf79-44ca-8d13-32d8356bbf68">
+<img width="511" alt="Screenshot 2023-07-17 at 14 47 16" src="./assets/image4.png">
 
 
 </details>
@@ -183,7 +177,7 @@ Given the UI design implement List lotteries feature.
 <details>
   <summary><b>Handle no search result case</b></summary><br>
 
-<img width="511" alt="Screenshot 2023-07-17 at 14 48 54" src="https://github.com/callstack-workshops/abbott-module-4-homework/assets/13610886/9b1142b4-ffd1-4aa4-b3b0-2d48c57a2e3a">
+<img width="511" alt="Screenshot 2023-07-17 at 14 48 54" src="./assets/image5.png">
 
 
 </details>
@@ -201,22 +195,22 @@ List lotteries feature:
 - When there are no search results for a given filter, no search result information should be displayed
 
   
-> :bulb: You are now here → https://github.com/callstack-workshops/abbott-module-4-homework/tree/part-3
+> :bulb: You are now here → [part-3](../../tree/part-3)
 
 ## Part 4: Store register lottery data
 
 
 <details>
   <summary><b>Make lotteries selectable and add `Register` button</b></summary><br>
-  
-<img width="511" alt="Screenshot 2023-07-17 at 14 11 22" src="https://github.com/callstack-workshops/abbott-module-4-homework/assets/13610886/9492f5d3-e48d-478c-886a-70df687d8853">
+
+<img width="511" alt="Screenshot 2023-07-17 at 14 11 22" src="./assets/image6.png">
 
 </details>
 
 <details>
   <summary><b>Add register modal with name input and validation:</b></summary><br>
 
-<img width="511" alt="Screenshot 2023-07-17 at 14 10 30" src="https://github.com/callstack-workshops/abbott-module-4-homework/assets/13610886/0b177c3c-14d9-44c6-a493-960fcd8a5404">
+<img width="511" alt="Screenshot 2023-07-17 at 14 10 30" src="./assets/image7.png">
 
 
 </details>
@@ -224,9 +218,9 @@ List lotteries feature:
 <details>
   <summary>Registered lotteries:</summary>
 
-<img width="511" alt="Screenshot 2023-07-17 at 14 08 42" src="https://github.com/callstack-workshops/abbott-module-4-homework/assets/13610886/48f6bc6d-c02d-4606-bc42-4b80787b2fc3">
+<img width="511" alt="Screenshot 2023-07-17 at 14 08 42" src="./assets/image8.png">
 
-  
+
 </details>
 
 Registered lotteries feature:
@@ -238,7 +232,7 @@ Registered lotteries feature:
 - Registered lotteries should be grayed-out and not be selectable
 
   
-> :bulb: You are now here → https://github.com/callstack-workshops/abbott-module-4-homework/tree/part-4 
+> :bulb: You are now here → [part-4](../../tree/part-4)
 
 
 ## Part 5: Add animation
@@ -246,9 +240,9 @@ Registered lotteries feature:
 <details>
   <summary>In this part we will implement header animation as following:</summary>
 
-<img width="511" alt="animation" src="https://github.com/callstack-workshops/abbott-module-4-homework/assets/13610886/b3697a2b-5f71-4ea2-b98d-9af3aab570ee" />
+<img width="511" alt="animation" src="./assets/image9.png" />
 
-  
+
 </details>
 
 Adding animations feature:
@@ -258,5 +252,5 @@ Adding animations feature:
 - Apply an animation to scale down the header elements as the user scrolls down.
 
 
-> :bulb: You are now here → https://github.com/callstack-workshops/abbott-module-4-homework/tree/part-5 
+> :bulb: You are now here → [part-5](../../tree/part-5)
 
