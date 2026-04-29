@@ -1,5 +1,9 @@
 import { Lottery } from '../types';
 
+const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000';
+
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 export async function createNewLottery({
   name,
   prize,
@@ -8,7 +12,9 @@ export async function createNewLottery({
   prize: string;
 }): Promise<Lottery> {
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/lotteries`, {
+    await delay(3000);
+
+    const response = await fetch(`${API_URL}/lotteries`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -32,7 +38,7 @@ export async function createNewLottery({
 
 export async function getLottieries() {
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/lotteries`);
+    const response = await fetch(`${API_URL}/lotteries`);
 
     const body = (await response.json()) as Array<Lottery>;
 
@@ -52,7 +58,7 @@ export async function registerToLottery({
   lotteryId: string;
 }) {
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/register`, {
+    const response = await fetch(`${API_URL}/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

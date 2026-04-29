@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
 
 interface FormProps {
   title: string;
@@ -8,6 +8,7 @@ interface FormProps {
   placeholder1?: string;
   placeholder2?: string;
   buttonText?: string;
+  loading?: boolean;
   onSubmit: (value1: string, value2: string) => void;
 }
 
@@ -16,6 +17,7 @@ export function Form({
   placeholder1 = "Enter value",
   placeholder2 = "Enter value",
   buttonText = "Submit",
+  loading = false,
   onSubmit,
 }: FormProps) {
   const [value1, setValue1] = useState("");
@@ -23,12 +25,15 @@ export function Form({
   const [touched1, setTouched1] = useState(false);
   const [touched2, setTouched2] = useState(false);
 
-  const isValid = value1.length >= 4 && value2.length >= 4;
-  const showError1 = touched1 && value1.length > 0 && value1.length < 4;
-  const showError2 = touched2 && value2.length > 0 && value2.length < 4;
+  const isField1Valid = value1.length >= 4;
+  const isField2Valid = value2.length >= 4;
+  const isValid = isField1Valid && isField2Valid;
+  const showError1 = touched1 && !isField1Valid;
+  const showError2 = touched2 && !isField2Valid;
+  const isButtonDisabled = !isValid || loading;
 
   const handleSubmit = () => {
-    if (isValid) {
+    if (isValid && !loading) {
       onSubmit(value1, value2);
     }
   };
@@ -64,11 +69,15 @@ export function Form({
       </View>
 
       <TouchableOpacity
-        style={[styles.button, !isValid && styles.buttonDisabled]}
+        style={[styles.button, isButtonDisabled && styles.buttonDisabled]}
         onPress={handleSubmit}
-        disabled={!isValid}
+        disabled={isButtonDisabled}
       >
-        <Text style={styles.buttonText}>{buttonText}</Text>
+        {loading ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <Text style={styles.buttonText}>{buttonText}</Text>
+        )}
       </TouchableOpacity>
     </View>
   );

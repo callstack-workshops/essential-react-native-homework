@@ -1,10 +1,12 @@
 import { View, StyleSheet } from "react-native";
 import { Form } from "./Form";
+import { useNewLottery } from "../hooks/useNewLottery";
 
 export function AddLottery() {
-  const handleSubmit = (name: string, numbers: string) => {
-    console.log("Lottery Name:", name);
-    console.log("Numbers:", numbers);
+  const { createNewLottery, loading, error } = useNewLottery();
+
+  const handleSubmit = (name: string, prize: string) => {
+    createNewLottery({ name, prize });
   };
 
   return (
@@ -14,6 +16,7 @@ export function AddLottery() {
         placeholder1="Lottery Name"
         placeholder2="Lottery Prize"
         buttonText="Add"
+        loading={loading}
         onSubmit={handleSubmit}
       />
     </View>
