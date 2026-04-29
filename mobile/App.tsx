@@ -3,13 +3,18 @@ import { AddLottery } from './components/AddLottery';
 import { NavigationContainer } from '@react-navigation/native';
 import { Home } from './components/Home';
 
+export type RootStackParamList = {
+  Home: undefined;
+  AddLottery: undefined;
+};
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="AddLottery" component={AddLottery} />
     </Stack.Navigator>
   );
 }
