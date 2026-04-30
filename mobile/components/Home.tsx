@@ -5,6 +5,7 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../App";
 import useLotteries from "../hooks/useLotteries";
+import useRegisteredLotteries from "../hooks/useRegisteredLotteries";
 import { Lottery } from "../types";
 import { LotteryCard } from "./LotteryCard";
 import { Ionicons } from "@expo/vector-icons";
@@ -14,6 +15,7 @@ type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'H
 export function Home() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const { data: lotteries, loading, error, fetchLotteries } = useLotteries();
+  const { registeredIds, loadRegisteredIds } = useRegisteredLotteries();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLotteryIds, setSelectedLotteryIds] = useState<string[]>([]);
 
@@ -32,6 +34,10 @@ export function Home() {
   );
 
   const handleLotteryPress = (lotteryId: string) => {
+    if (registeredIds.includes(lotteryId)) {
+      return;
+    }
+
     setSelectedLotteryIds((prevSelected) => {
       if (prevSelected.includes(lotteryId)) {
         return prevSelected.filter((id) => id !== lotteryId);
@@ -42,7 +48,13 @@ export function Home() {
   };
 
   const handleRegister = () => {
-    navigation.navigate("Register", { lotteryIds: selectedLotteryIds });
+    navigation.navigate("Register", {
+      lotteryIds: selectedLotteryIds,
+      onSuccessfulComplete: () => {
+        setSelectedLotteryIds([]);
+        loadRegisteredIds();
+      }
+    });
   };
 
   const isRegisterEnabled = selectedLotteryIds.length > 0;
@@ -51,6 +63,7 @@ export function Home() {
     <LotteryCard
       lottery={item}
       isSelected={selectedLotteryIds.includes(item.id)}
+      isRegistered={registeredIds.includes(item.id)}
       onPress={() => handleLotteryPress(item.id)}
     />
   );

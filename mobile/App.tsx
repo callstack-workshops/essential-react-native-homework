@@ -8,7 +8,10 @@ import Toast from 'react-native-toast-message';
 export type RootStackParamList = {
   Home: undefined;
   AddLottery: undefined;
-  Register: { lotteryIds: string[] };
+  Register: {
+    lotteryIds: string[];
+    onSuccessfulComplete?: () => void;
+  };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();

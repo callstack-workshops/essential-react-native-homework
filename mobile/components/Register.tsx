@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator 
 import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "../App";
 import useLotteryRegister from "../hooks/useLotteryRegister";
+import useRegisteredLotteries from "../hooks/useRegisteredLotteries";
 import Toast from "react-native-toast-message";
 
 type RegisterScreenRouteProp = RouteProp<RootStackParamList, 'Register'>;
@@ -10,31 +11,34 @@ type RegisterScreenRouteProp = RouteProp<RootStackParamList, 'Register'>;
 export function Register() {
   const route = useRoute<RegisterScreenRouteProp>();
   const navigation = useNavigation();
-  const { lotteryIds } = route.params;
+  const { lotteryIds, onSuccessfulComplete } = route.params;
   const [name, setName] = useState("");
   const [touched, setTouched] = useState(false);
   const { registerToLotteries, loading, error } = useLotteryRegister();
+  const { addRegisteredIds } = useRegisteredLotteries();
 
   const isFieldValid = name.length >= 4;
   const showError = touched && !isFieldValid;
   const isButtonDisabled = !isFieldValid || loading;
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (isFieldValid && !loading) {
-      registerToLotteries({ name, lotteries: lotteryIds })
-        .then(() => {
-          navigation.goBack();
-          Toast.show({
-            type: "success",
-            text1: "Successfully registered!",
-          });
-        })
-        .catch(() => {
-          Toast.show({
-            type: "error",
-            text1: "Failed to register",
-          });
+      try {
+        await registerToLotteries({ name, lotteries: lotteryIds });
+        await addRegisteredIds(lotteryIds);
+
+        onSuccessfulComplete?.();
+        navigation.goBack();
+        Toast.show({
+          type: "success",
+          text1: "Successfully registered!",
         });
+      } catch (error) {
+        Toast.show({
+          type: "error",
+          text1: "Failed to register",
+        });
+      }
     }
   };
 
