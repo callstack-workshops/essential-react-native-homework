@@ -42,7 +42,7 @@ export function Home() {
   };
 
   const handleRegister = () => {
-    console.log("Register for lotteries:", selectedLotteryIds);
+    navigation.navigate("Register", { lotteryIds: selectedLotteryIds });
   };
 
   const isRegisterEnabled = selectedLotteryIds.length > 0;

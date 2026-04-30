@@ -60,6 +60,7 @@ export async function registerToLottery({
   lotteryId: string;
 }) {
   try {
+    await delay(1000);
     const response = await fetch(`${API_URL}/register`, {
       method: 'POST',
       headers: {
