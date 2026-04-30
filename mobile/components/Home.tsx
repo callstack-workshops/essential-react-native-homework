@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, FlatList, StyleSheet, ActivityIndicator, TextInput } from "react-native";
+import { Text, View, FlatList, StyleSheet, ActivityIndicator, TextInput, TouchableOpacity } from "react-native";
 import { FAB } from "./FAB";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -15,6 +15,7 @@ export function Home() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const { data: lotteries, loading, error, fetchLotteries } = useLotteries();
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedLotteryIds, setSelectedLotteryIds] = useState<string[]>([]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -30,8 +31,28 @@ export function Home() {
     lottery.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const handleLotteryPress = (lotteryId: string) => {
+    setSelectedLotteryIds((prevSelected) => {
+      if (prevSelected.includes(lotteryId)) {
+        return prevSelected.filter((id) => id !== lotteryId);
+      } else {
+        return [...prevSelected, lotteryId];
+      }
+    });
+  };
+
+  const handleRegister = () => {
+    console.log("Register for lotteries:", selectedLotteryIds);
+  };
+
+  const isRegisterEnabled = selectedLotteryIds.length > 0;
+
   const renderLotteryItem = ({ item }: { item: Lottery }) => (
-    <LotteryCard lottery={item} />
+    <LotteryCard
+      lottery={item}
+      isSelected={selectedLotteryIds.includes(item.id)}
+      onPress={() => handleLotteryPress(item.id)}
+    />
   );
 
   if (loading) {
@@ -52,6 +73,15 @@ export function Home() {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity
+        style={[styles.registerButton, !isRegisterEnabled && styles.registerButtonDisabled]}
+        onPress={handleRegister}
+        disabled={!isRegisterEnabled}
+      >
+        <Text style={styles.registerButtonText}>
+          Register {selectedLotteryIds.length > 0 ? `(${selectedLotteryIds.length})` : ''}
+        </Text>
+      </TouchableOpacity>
       <View style={styles.searchContainer}>
         <Ionicons name="search" size={20} color="#999" style={styles.searchIcon} />
         <TextInput
@@ -90,11 +120,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#f5f5f5',
   },
+  registerButton: {
+    backgroundColor: '#007AFF',
+    margin: 16,
+    marginBottom: 8,
+    padding: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  registerButtonDisabled: {
+    backgroundColor: '#ccc',
+    opacity: 0.6,
+  },
+  registerButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
-    margin: 16,
+    marginHorizontal: 16,
     marginBottom: 0,
     paddingHorizontal: 12,
     borderRadius: 8,
