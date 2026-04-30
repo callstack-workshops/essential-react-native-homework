@@ -38,6 +38,8 @@ export async function createNewLottery({
 
 export async function getLottieries() {
   try {
+    await delay(3000);
+
     const response = await fetch(`${API_URL}/lotteries`);
 
     const body = (await response.json()) as Array<Lottery>;

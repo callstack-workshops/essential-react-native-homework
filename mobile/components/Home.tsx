@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Text, View, FlatList, StyleSheet, ActivityIndicator, TextInput } from "react-native";
 import { FAB } from "./FAB";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../App";
 import useLotteries from "../hooks/useLotteries";
@@ -13,8 +13,14 @@ type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'H
 
 export function Home() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
-  const { data: lotteries, loading, error } = useLotteries();
+  const { data: lotteries, loading, error, fetchLotteries } = useLotteries();
   const [searchQuery, setSearchQuery] = useState("");
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchLotteries();
+    }, [])
+  );
 
   const openAddLottery = () => {
     navigation.navigate("AddLottery");
