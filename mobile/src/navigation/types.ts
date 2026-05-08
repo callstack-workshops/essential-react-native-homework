@@ -1,4 +1,4 @@
 export type RootStackParamList = {
   Home: undefined;
-  AddLottery: undefined;
+  AddLottery: { onGoBack: () => void };
 };
