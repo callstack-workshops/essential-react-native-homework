@@ -1,31 +1,60 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   View,
   Text,
   TextInput,
   FlatList,
   ActivityIndicator,
+  TouchableOpacity,
   StyleSheet,
 } from 'react-native';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FAB } from '../components/FAB';
 import { LotteryCard } from '../components/LotteryCard';
+import { RegisterModal } from '../components/RegisterModal';
 import { useLotteries } from '../hooks/useLotteries';
 import type { RootStackParamList } from '../navigation/types';
 
 type Nav = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
+const REGISTERED_KEY = 'registeredLotteryIds';
+
 export function HomeScreen() {
   const navigation = useNavigation<Nav>();
   const { data: lotteries, loading, fetchLotteries } = useLotteries();
   const [filter, setFilter] = useState('');
+  const [selected, setSelected] = useState<string[]>([]);
+  const [registeredIds, setRegisteredIds] = useState<string[]>([]);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useIsFocused();
+
+  useEffect(() => {
+    AsyncStorage.getItem(REGISTERED_KEY).then((val) => {
+      if (val) setRegisteredIds(JSON.parse(val));
+    });
+  }, []);
 
   const filteredLotteries = lotteries.filter((l) =>
     l.name.toLowerCase().includes(filter.toLowerCase()),
   );
+
+  const handleSelect = (id: string) => {
+    if (registeredIds.includes(id)) return;
+    setSelected((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    );
+  };
+
+  const handleRegisterSuccess = async () => {
+    const updated = [...new Set([...registeredIds, ...selected])];
+    setRegisteredIds(updated);
+    await AsyncStorage.setItem(REGISTERED_KEY, JSON.stringify(updated));
+    setSelected([]);
+    fetchLotteries();
+  };
 
   return (
     <View style={styles.container}>
@@ -64,8 +93,9 @@ export function HomeScreen() {
         renderItem={({ item }) => (
           <LotteryCard
             lottery={item}
-            selected={false}
-            onSelect={() => {}}
+            selected={selected.includes(item.id)}
+            registered={registeredIds.includes(item.id)}
+            onSelect={() => handleSelect(item.id)}
           />
         )}
         contentContainerStyle={styles.list}
@@ -73,7 +103,25 @@ export function HomeScreen() {
         refreshing={loading}
       />
 
+      {selected.length > 0 && (
+        <TouchableOpacity
+          style={styles.registerButton}
+          onPress={() => setModalVisible(true)}
+        >
+          <Text style={styles.registerButtonText}>
+            Register ({selected.length})
+          </Text>
+        </TouchableOpacity>
+      )}
+
       <FAB onPress={() => navigation.navigate('AddLottery', { onGoBack: fetchLotteries })} />
+
+      <RegisterModal
+        visible={modalVisible}
+        selectedLotteries={selected}
+        onClose={() => setModalVisible(false)}
+        onSubmit={handleRegisterSuccess}
+      />
     </View>
   );
 }
@@ -105,7 +153,7 @@ const styles = StyleSheet.create({
   },
   list: {
     paddingHorizontal: 16,
-    paddingBottom: 100,
+    paddingBottom: 160,
   },
   centered: {
     alignItems: 'center',
@@ -114,5 +162,24 @@ const styles = StyleSheet.create({
   emptyText: {
     color: '#999',
     fontSize: 16,
+  },
+  registerButton: {
+    position: 'absolute',
+    bottom: 100,
+    alignSelf: 'center',
+    backgroundColor: '#6200ee',
+    borderRadius: 24,
+    paddingVertical: 12,
+    paddingHorizontal: 28,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
+  },
+  registerButtonText: {
+    color: '#fff',
+    fontSize: 15,
+    fontWeight: '600',
   },
 });

@@ -4,11 +4,12 @@ import { Lottery } from '../types';
 interface Props {
   lottery: Lottery;
   selected: boolean;
+  registered: boolean;
   onSelect: () => void;
 }
 
-export function LotteryCard({ lottery, selected, onSelect }: Props) {
-  const isDisabled = lottery.status === 'finished';
+export function LotteryCard({ lottery, selected, registered, onSelect }: Props) {
+  const isDisabled = lottery.status === 'finished' || registered;
 
   return (
     <TouchableOpacity
@@ -20,8 +21,12 @@ export function LotteryCard({ lottery, selected, onSelect }: Props) {
       onPress={isDisabled ? undefined : onSelect}
       activeOpacity={isDisabled ? 1 : 0.7}
     >
-      <Text style={styles.name}>{lottery.name}</Text>
-      <Text style={styles.prize}>{lottery.prize}</Text>
+      <Text style={[styles.name, isDisabled && styles.textDisabled]}>
+        {lottery.name}
+      </Text>
+      <Text style={[styles.prize, isDisabled && styles.textDisabled]}>
+        {lottery.prize}
+      </Text>
       <Text style={styles.id}>{lottery.id}</Text>
       <Text style={styles.status}>
         {lottery.status === 'running' ? '🔄' : '✅'}
@@ -44,7 +49,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   cardDisabled: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#f0f0f0',
   },
   name: {
     fontSize: 16,
@@ -60,6 +65,9 @@ const styles = StyleSheet.create({
   id: {
     fontSize: 11,
     color: '#aaa',
+  },
+  textDisabled: {
+    color: '#bbb',
   },
   status: {
     position: 'absolute',

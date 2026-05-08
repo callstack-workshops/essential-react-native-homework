@@ -26,3 +26,21 @@ export async function getLotteries(): Promise<Array<Lottery>> {
   const body = (await response.json()) as Array<Lottery>;
   return body;
 }
+
+export async function registerToLottery({
+  name,
+  lotteryId,
+}: {
+  name: string;
+  lotteryId: string;
+}): Promise<void> {
+  const response = await fetch(`${API_URL}/register`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, lotteryId }),
+  });
+
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+}
