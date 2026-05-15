@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import { useNewLottery } from "../hooks/useNewLottery";
 import * as Yup from 'yup';
 import { ActivityIndicator } from "react-native";
+import  Toast from 'react-native-toast-message';
 
 const lotterySchema = Yup.object({
     name: Yup.string().min(4).required(),
@@ -15,7 +16,11 @@ export default function AddLotteryForm() {
     const { createNewLottery, error, loading } = useNewLottery();
 
     const showToast = () => {
-        ToastAndroid.show('Lottery created successfully!', ToastAndroid.SHORT);
+        Toast.show({
+            type: 'success',
+            text1: 'Lottery created successfully!',
+            position: 'bottom',
+        });
       };
 
     const formik = useFormik({
@@ -27,7 +32,9 @@ export default function AddLotteryForm() {
           prize: '',
         },
         onSubmit: (values) => {
-          createNewLottery({ name: values.name, prize: values.prize })
+          // Ensure prize is always a string with $ prefix if it's just numbers
+          const prize = /^\d+$/.test(values.prize) ? `$${values.prize}` : values.prize;
+          createNewLottery({ name: values.name, prize })
             .then(() => {
                 formik.resetForm({ values: { name: '', prize: '' } });
                 showToast();

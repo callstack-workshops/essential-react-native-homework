@@ -5,6 +5,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Home from './screens/Home';
 import AddLottery from './screens/AddLottery';
 import type { RootStackParamList } from './navigationTypes';
+import Toast from 'react-native-toast-message';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -23,6 +24,7 @@ export default function App() {
       <NavigationContainer>
         <RootStack />
       </NavigationContainer>
+      <Toast />
     </SafeAreaProvider>
   );
 }
