@@ -34,10 +34,9 @@ export async function createNewLottery({
 export async function getLottieries() {
   try {
     const response = await fetch(`${VITE_API_URL}/lotteries`);
+    const body = (await response.json()) as { data: Array<Lottery> };
 
-    const body = (await response.json()) as Array<Lottery>;
-
-    return body;
+    return body.data;
   } catch (e) {
     console.error(e);
 
