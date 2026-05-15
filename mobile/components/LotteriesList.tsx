@@ -1,4 +1,5 @@
-import { ActivityIndicator, FlatList, StyleSheet, Text, TextInput, View } from "react-native";
+import { ActivityIndicator, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FontAwesome5 } from "@expo/vector-icons";
 import useLotteries from "../hooks/useLotteries";
 import { colors } from "../colors";
 import LotteryCard from "./LotteryCard";
@@ -6,7 +7,13 @@ import { useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
 
-export default function LotteriesList() {
+interface LotteriesListProps {
+    selectedIds: string[];
+    registeredIds: string[];
+    onToggleSelect: (id: string) => void;
+}
+
+export default function LotteriesList({ selectedIds, registeredIds, onToggleSelect }: LotteriesListProps) {
     const { data, loading, error, fetchLotteries } = useLotteries();
     const [search, setSearch] = useState('');
 
@@ -21,7 +28,16 @@ export default function LotteriesList() {
     }
 
     if (error) {
-        return <Text>Error: {error}</Text>;
+        return (
+            <View style={styles.errorContainer}>
+                <FontAwesome5 name="exclamation-circle" size={48} color={colors.grey} />
+                <Text style={styles.errorTitle}>Could not load lotteries</Text>
+                <Text style={styles.errorSubtitle}>Check your connection and try again.</Text>
+                <TouchableOpacity style={styles.retryButton} onPress={fetchLotteries}>
+                    <Text style={styles.retryButtonText}>Retry</Text>
+                </TouchableOpacity>
+            </View>
+        );
     }
 
     const filteredData = data?.filter((lottery) => lottery.name.includes(search));
@@ -36,7 +52,14 @@ export default function LotteriesList() {
             />
             {filteredData?.length > 0 ? <FlatList
                 data={filteredData}
-                renderItem={({ item }) => <LotteryCard lottery={item} />}
+                renderItem={({ item }) => (
+                    <LotteryCard
+                        lottery={item}
+                        selected={selectedIds.includes(item.id)}
+                        registered={registeredIds.includes(item.id)}
+                        onPress={() => onToggleSelect(item.id)}
+                    />
+                )}
                 keyExtractor={(item) => item.id}
                 style={styles.list}
                 ItemSeparatorComponent={() => <View style={{height: 8}} />}
@@ -69,5 +92,34 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlign: 'center',
         marginBottom: 8,
+    },
+    errorContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 12,
+        paddingHorizontal: 24,
+    },
+    errorTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    errorSubtitle: {
+        fontSize: 14,
+        color: '#666',
+        textAlign: 'center',
+    },
+    retryButton: {
+        marginTop: 8,
+        paddingVertical: 10,
+        paddingHorizontal: 32,
+        borderRadius: 8,
+        backgroundColor: colors.buttonPrimary,
+    },
+    retryButtonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
     },
 });
