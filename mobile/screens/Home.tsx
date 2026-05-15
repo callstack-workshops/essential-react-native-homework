@@ -5,6 +5,7 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { RootStackParamList } from "../navigationTypes";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FontAwesome5 } from "@expo/vector-icons";
+import LotteriesList from "../components/LotteriesList";
 
 type HomeNavigation = NativeStackNavigationProp<RootStackParamList, "Home">;
 
@@ -20,6 +21,9 @@ export default function HomeScreen() {
       <Text style={styles.title}>Lotteries</Text>
       <FontAwesome5 name="dice-five" size={32} color="black" />
       </View>
+      <View style={styles.lotteriesContainer}>
+        <LotteriesList />
+      </View>
       <Fab onPress={navigateToAddLottery} />
     </SafeAreaView>
   );
@@ -29,6 +33,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: 48,
+        paddingBottom: 24,
         position: 'relative',
         alignItems: 'center',
     },
@@ -41,5 +46,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         gap: 16,
+    },
+    lotteriesContainer: {
+        flex: 1,
+        width: '100%',
+        paddingTop: 24,
     },
 });
